@@ -40,8 +40,8 @@ public class AirportsInUsaProblem {
             return column[1] + "," + column[2];
         });
 
-        String dateCode = DateUtil.format(new Date());
-        String outputPath = "out/airports/airports_in_usa/" + dateCode + ".text";
+        String fileName = DateUtil.format(new Date()) + ".text";
+        String outputPath = Utils.AIRPORTS_IN_USA_OUT_PATH + "/" + fileName;
         outputUsaStatesAirports.saveAsTextFile(outputPath);
     }
 }
