@@ -4,4 +4,4 @@
 *.iws
 out/
 build/
-.idea/
+/.idea/
