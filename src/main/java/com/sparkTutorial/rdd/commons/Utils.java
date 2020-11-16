@@ -19,6 +19,8 @@ public class Utils {
     public static final String AIRPORTS_BY_LATITUDE_OUT_PATH = AIRPORTS_OUT_PATH + "/by_latitude";
     private static final String NASA_OUT_PATH = "out/nasa";
     public static final String NASA_UNION_OUT_PATH = NASA_OUT_PATH + "/union/" + DateUtil.format(new Date()) + ".csv";
+    public static final String NASA_INTERSECT_OUT_PATH = NASA_OUT_PATH + "/intersect/" + DateUtil.format(new Date()) +
+            ".csv";
 
     public static String DATE_TEXT_FILE_NAME = DateUtil.format(new Date()) + ".text";
 

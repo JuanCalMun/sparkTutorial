@@ -1,5 +1,10 @@
 package com.sparkTutorial.rdd.nasaApacheWebLogs;
 
+import com.sparkTutorial.rdd.commons.Utils;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+
 public class SameHostsProblem {
 
     public static void main(String[] args) throws Exception {
@@ -19,5 +24,23 @@ public class SameHostsProblem {
 
            Make sure the head lines are removed in the resulting RDD.
          */
+
+        SparkConf sparkConf = new SparkConf().setAppName("intersectLogProblem").setMaster("local[*]");
+        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+
+        JavaRDD<String> julyFirstLogs = sparkContext.textFile("in/nasa_19950701.tsv");
+        JavaRDD<String> augustFirstLogs = sparkContext.textFile("in/nasa_19950801.tsv");
+
+        JavaRDD<String> julyHosts = headlessFile(julyFirstLogs).map(line -> line.split("\t")[0]);
+        JavaRDD<String> augustHosts = headlessFile(augustFirstLogs).map(line -> line.split("\t")[0]);
+
+        JavaRDD<String> bothMonthsHosts = julyHosts.intersection(augustHosts);
+
+        bothMonthsHosts.saveAsTextFile(Utils.NASA_INTERSECT_OUT_PATH);
+    }
+
+    private static JavaRDD<String> headlessFile(JavaRDD<String> headedFile) {
+        String header = headedFile.first();
+        return headedFile.filter(line -> !line.equals(header));
     }
 }
