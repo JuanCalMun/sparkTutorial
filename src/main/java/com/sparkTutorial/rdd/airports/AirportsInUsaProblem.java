@@ -1,16 +1,11 @@
 package com.sparkTutorial.rdd.airports;
 
 import com.sparkTutorial.rdd.commons.Utils;
-import org.apache.ivy.util.DateUtil;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 
-import java.util.Date;
-
 public class AirportsInUsaProblem {
-
-    public static final String LOCAL_2 = "local[2]";
 
     public static void main(String[] args) {
 
@@ -27,7 +22,7 @@ public class AirportsInUsaProblem {
            ...
          */
 
-        SparkConf sparkConf = new SparkConf().setAppName("airports").setMaster(LOCAL_2);
+        SparkConf sparkConf = new SparkConf().setAppName("airportsInUsa").setMaster(Utils.MASTER);
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
 
@@ -40,8 +35,7 @@ public class AirportsInUsaProblem {
             return column[1] + "," + column[2];
         });
 
-        String fileName = DateUtil.format(new Date()) + ".text";
-        String outputPath = Utils.AIRPORTS_IN_USA_OUT_PATH + "/" + fileName;
+        String outputPath = Utils.AIRPORTS_IN_USA_OUT_PATH + "/" + Utils.DATE_TEXT_FILE_NAME;
         outputUsaStatesAirports.saveAsTextFile(outputPath);
     }
 }

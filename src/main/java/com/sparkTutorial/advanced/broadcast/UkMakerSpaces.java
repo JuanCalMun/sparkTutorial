@@ -10,7 +10,10 @@ import org.apache.spark.broadcast.Broadcast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Scanner;
 
 public class UkMakerSpaces {
 
@@ -19,7 +22,7 @@ public class UkMakerSpaces {
         SparkConf conf = new SparkConf().setAppName("UkMakerSpaces").setMaster("local[1]");
         JavaSparkContext javaSparkContext = new JavaSparkContext(conf);
 
-        final Broadcast<Map<String, String>> postCodeMap = javaSparkContext.broadcast(loadPostCodeMap());
+        Broadcast<Map<String, String>> postCodeMap = javaSparkContext.broadcast(loadPostCodeMap());
 
         JavaRDD<String> makerSpaceRdd = javaSparkContext.textFile("in/uk-makerspaces-identifiable-data.csv");
 
