@@ -1,5 +1,10 @@
 package com.sparkTutorial.rdd.nasaApacheWebLogs;
 
+import com.sparkTutorial.rdd.commons.Utils;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+
 public class UnionLogProblem {
 
     public static void main(String[] args) throws Exception {
@@ -14,5 +19,21 @@ public class UnionLogProblem {
 
            Make sure the head lines are removed in the resulting RDD.
          */
+
+        SparkConf sparkConf = new SparkConf().setAppName("unionLogProblem").setMaster("local[*]");
+        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+
+        JavaRDD<String> julyFirstLogs = sparkContext.textFile("in/nasa_19950701.tsv");
+        JavaRDD<String> augustFirstLogs = sparkContext.textFile("in/nasa_19950801.tsv");
+
+        JavaRDD<String> logLines = headlessFile(julyFirstLogs).union(headlessFile(augustFirstLogs));
+
+        logLines.sample(true, 0.1)
+                .saveAsTextFile(Utils.NASA_UNION_OUT_PATH);
+    }
+
+    private static JavaRDD<String> headlessFile(JavaRDD<String> headedFile) {
+        String header = headedFile.first();
+        return headedFile.filter(line -> !line.equals(header));
     }
 }

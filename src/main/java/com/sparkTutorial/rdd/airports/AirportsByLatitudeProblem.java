@@ -25,7 +25,7 @@ public class AirportsByLatitudeProblem {
          */
 
 
-        SparkConf sparkConf = new SparkConf().setAppName("airportsByLatitude").setMaster(Utils.MASTER);
+        SparkConf sparkConf = new SparkConf().setAppName("airportsByLatitude").setMaster(Utils.MASTER_LOCAL_2);
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
         JavaRDD<String> airports = sparkContext.textFile("in/airports.text");

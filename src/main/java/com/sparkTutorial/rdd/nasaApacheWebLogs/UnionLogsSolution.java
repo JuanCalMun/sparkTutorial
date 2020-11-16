@@ -1,14 +1,15 @@
 package com.sparkTutorial.rdd.nasaApacheWebLogs;
 
+import com.sparkTutorial.rdd.commons.Utils;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 
 public class UnionLogsSolution {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
-        SparkConf conf = new SparkConf().setAppName("unionLogs").setMaster("local[*]");
+        SparkConf conf = new SparkConf().setAppName("unionLogs").setMaster(Utils.MASTER_LOCAL_STAR);
 
         JavaSparkContext sc = new JavaSparkContext(conf);
 

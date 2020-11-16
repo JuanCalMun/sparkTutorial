@@ -22,7 +22,7 @@ public class AirportsInUsaProblem {
            ...
          */
 
-        SparkConf sparkConf = new SparkConf().setAppName("airportsInUsa").setMaster(Utils.MASTER);
+        SparkConf sparkConf = new SparkConf().setAppName("airportsInUsa").setMaster(Utils.MASTER_LOCAL_2);
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
 
