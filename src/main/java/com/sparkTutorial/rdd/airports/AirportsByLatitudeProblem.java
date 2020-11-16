@@ -7,7 +7,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 
 public class AirportsByLatitudeProblem {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         /* Create a Spark program to read the airport data from in/airports.text,  find all the airports whose
         latitude are bigger than 40.
@@ -29,11 +29,10 @@ public class AirportsByLatitudeProblem {
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
         JavaRDD<String> airports = sparkContext.textFile("in/airports.text");
-        JavaRDD<String> airportsFilteredByLatitude =
-                airports.filter(airport -> Float.parseFloat(airport.split(Utils.COMMA_DELIMITER)[6]) > 40).map(airport -> {
-            String[] values = airport.split(Utils.COMMA_DELIMITER);
-            return values[1] + ", " + values[6];
-        });
+        JavaRDD<String> airportsFilteredByLatitude = airports
+                .map(airport -> airport.split(Utils.COMMA_DELIMITER))
+                .filter(values -> Float.parseFloat(values[6]) > 40)
+                .map(values -> values[1] + ", " + values[6]);
 
         String outputPath = Utils.AIRPORTS_BY_LATITUDE_OUT_PATH + "/" + Utils.DATE_TEXT_FILE_NAME;
         airportsFilteredByLatitude.saveAsTextFile(outputPath);

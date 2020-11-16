@@ -30,10 +30,10 @@ public class AirportsInUsaProblem {
         JavaRDD<String> unitedStatesAirports =
                 airports.filter(line -> line.split(Utils.COMMA_DELIMITER)[3].equals("\"United States\""));
 
-        JavaRDD<String> outputUsaStatesAirports = unitedStatesAirports.map(line -> {
-            String[] column = line.split(Utils.COMMA_DELIMITER);
-            return column[1] + "," + column[2];
-        });
+        JavaRDD<String> outputUsaStatesAirports =
+                airports.map(line -> line.split(Utils.COMMA_DELIMITER))
+                        .filter(values -> "\"United States\"".equals(values[3]))
+                        .map(values -> values[1] + "," + values[2]);
 
         String outputPath = Utils.AIRPORTS_IN_USA_OUT_PATH + "/" + Utils.DATE_TEXT_FILE_NAME;
         outputUsaStatesAirports.saveAsTextFile(outputPath);
