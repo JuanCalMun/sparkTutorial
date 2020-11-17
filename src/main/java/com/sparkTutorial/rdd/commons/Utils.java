@@ -21,8 +21,8 @@ public class Utils {
     public static final String NASA_UNION_OUT_PATH = NASA_OUT_PATH + "/union/" + DateUtil.format(new Date()) + ".csv";
     public static final String NASA_INTERSECT_OUT_PATH = NASA_OUT_PATH + "/intersect/" + DateUtil.format(new Date()) +
             ".csv";
-
     public static String DATE_TEXT_FILE_NAME = DateUtil.format(new Date()) + ".text";
+    public static final String AIRPORTS_NOT_USA_FILTERED = AIRPORTS_OUT_PATH + "/filtered/" + DATE_TEXT_FILE_NAME;
 
     private Utils() {
     }
