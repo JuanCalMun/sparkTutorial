@@ -10,6 +10,7 @@ public class Utils {
     public static final String COMMA_DELIMITER = ",(?=([^\"]*\"[^\"]*\")*[^\"]*$)";
 
     //    Build constants
+    public static final String MASTER_LOCAL = "local";
     public static final String MASTER_LOCAL_2 = "local[2]";
     public static final String MASTER_LOCAL_STAR = "local[*]";
 
@@ -22,7 +23,8 @@ public class Utils {
     public static final String NASA_INTERSECT_OUT_PATH = NASA_OUT_PATH + "/intersect/" + DateUtil.format(new Date()) +
             ".csv";
     public static String DATE_TEXT_FILE_NAME = DateUtil.format(new Date()) + ".text";
-    public static final String AIRPORTS_NOT_USA_FILTERED = AIRPORTS_OUT_PATH + "/filtered/" + DATE_TEXT_FILE_NAME;
+    public static final String AIRPORTS_NOT_USA_FILTERED_OUT_PATH = AIRPORTS_OUT_PATH + "/filtered/" + DATE_TEXT_FILE_NAME;
+    public static final String AIRPORTS_UPPERCASE_OUT_PATH = AIRPORTS_OUT_PATH + "/uppercase/" + DATE_TEXT_FILE_NAME;
 
     private Utils() {
     }

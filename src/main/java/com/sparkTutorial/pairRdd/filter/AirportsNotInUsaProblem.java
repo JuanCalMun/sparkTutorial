@@ -26,7 +26,7 @@ public class AirportsNotInUsaProblem {
            ...
          */
 
-        SparkConf sparkConf = new SparkConf().setAppName("airportsNotInUsa").setMaster(Utils.MASTER_LOCAL_2);
+        SparkConf sparkConf = new SparkConf().setAppName("airportsNotInUsa").setMaster(Utils.MASTER_LOCAL);
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
         JavaRDD<String> lines = sparkContext.textFile("in/airports.text");
@@ -36,7 +36,7 @@ public class AirportsNotInUsaProblem {
                 .mapToPair(elements -> new Tuple2<>(elements[1], elements[3]));
 
         JavaPairRDD<String, String> notUsaAirports = airports.filter(airport -> !"\"United States\"".equals(airport._2));
-        notUsaAirports.saveAsTextFile(Utils.AIRPORTS_NOT_USA_FILTERED);
+        notUsaAirports.saveAsTextFile(Utils.AIRPORTS_NOT_USA_FILTERED_OUT_PATH);
 
     }
 }
