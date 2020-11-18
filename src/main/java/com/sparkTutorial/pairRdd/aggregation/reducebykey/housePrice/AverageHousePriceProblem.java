@@ -1,6 +1,15 @@
 package com.sparkTutorial.pairRdd.aggregation.reducebykey.housePrice;
 
 
+import com.sparkTutorial.rdd.commons.Utils;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+import scala.Tuple2;
+
 public class AverageHousePriceProblem {
 
     public static void main(String[] args) throws Exception {
@@ -34,6 +43,34 @@ public class AverageHousePriceProblem {
 
            3, 1 and 2 mean the number of bedrooms. 325000 means the average price of houses with 3 bedrooms is 325000.
          */
+        Logger.getLogger("org").setLevel(Level.ERROR);
+        SparkConf sparkConf = new SparkConf().setMaster(Utils.MASTER_LOCAL).setAppName("averageHousePriceProblem");
+        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+
+        JavaRDD<String> lines = sparkContext.textFile("in/RealEstate.csv");
+        JavaPairRDD<Integer, AvgCount> priceByBedrooms =
+                lines.filter(line -> !line.contains("Bedrooms"))
+                        .map(line -> line.split(","))
+                        .mapToPair(values -> new Tuple2<>(
+                                Integer.valueOf(values[3]),
+                                new AvgCount(1, Double.parseDouble(values[2]))));
+
+        JavaPairRDD<Integer, AvgCount> priceByBedroomsTotal = priceByBedrooms
+                .reduceByKey((x, y) -> new AvgCount(
+                        x.getCount() + y.getCount(),
+                        x.getTotal() + y.getTotal()));
+
+        JavaPairRDD<Integer, Double> priceByBedroomsMean =
+                priceByBedroomsTotal.mapValues(avgCount -> avgCount.getTotal() / avgCount.getCount());
+
+        System.out.println("housePriceTotal: ");
+        priceByBedroomsTotal.collectAsMap()
+                .forEach((count, value) -> System.out.println(count + " : " + value));
+
+        System.out.println("housePriceMean: ");
+        priceByBedroomsMean.collectAsMap()
+                .forEach((count, value) -> System.out.println(count + " : " + value));
+
     }
 
 }

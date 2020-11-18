@@ -3,6 +3,7 @@ package com.sparkTutorial.pairRdd.aggregation.reducebykey.housePrice;
 import java.io.Serializable;
 
 public class AvgCount implements Serializable {
+    private static final long serialVersionUID = 6371489765592490768L;
     private int count;
     private double total;
 
@@ -17,6 +18,10 @@ public class AvgCount implements Serializable {
 
     public double getTotal() {
         return total;
+    }
+
+    public double mean() {
+        return count / total;
     }
 
     @Override
