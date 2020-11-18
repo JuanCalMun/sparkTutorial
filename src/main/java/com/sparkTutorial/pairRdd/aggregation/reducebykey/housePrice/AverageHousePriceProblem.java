@@ -12,7 +12,7 @@ import scala.Tuple2;
 
 public class AverageHousePriceProblem {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         /* Create a Spark program to read the house data from in/RealEstate.csv,
            output the average price for houses with different number of bedrooms.
@@ -61,7 +61,7 @@ public class AverageHousePriceProblem {
                         x.getTotal() + y.getTotal()));
 
         JavaPairRDD<Integer, Double> priceByBedroomsMean =
-                priceByBedroomsTotal.mapValues(avgCount -> avgCount.getTotal() / avgCount.getCount());
+                priceByBedroomsTotal.mapValues(AvgCount::getMean);
 
         System.out.println("housePriceTotal: ");
         priceByBedroomsTotal.collectAsMap()

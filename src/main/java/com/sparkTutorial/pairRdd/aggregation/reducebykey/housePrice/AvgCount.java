@@ -20,7 +20,7 @@ public class AvgCount implements Serializable {
         return total;
     }
 
-    public double mean() {
+    public double getMean() {
         return count / total;
     }
 
