@@ -1,7 +1,6 @@
 package com.sparkTutorial.pairRdd.aggregation.reducebykey.housePrice;
 
 
-import com.sparkTutorial.rdd.commons.Utils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
@@ -44,7 +43,7 @@ public class AverageHousePriceProblem {
            3, 1 and 2 mean the number of bedrooms. 325000 means the average price of houses with 3 bedrooms is 325000.
          */
         Logger.getLogger("org").setLevel(Level.ERROR);
-        SparkConf sparkConf = new SparkConf().setMaster(Utils.MASTER_LOCAL).setAppName("averageHousePriceProblem");
+        SparkConf sparkConf = new SparkConf().setMaster("local[3]").setAppName("averageHousePriceProblem");
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
         JavaRDD<String> lines = sparkContext.textFile("in/RealEstate.csv");
@@ -58,19 +57,19 @@ public class AverageHousePriceProblem {
         JavaPairRDD<Integer, AvgCount> priceByBedroomsTotal = priceByBedrooms
                 .reduceByKey((x, y) -> new AvgCount(
                         x.getCount() + y.getCount(),
-                        x.getTotal() + y.getTotal()));
+                        x.getTotal() + y.getTotal()))
+                .sortByKey();
 
         JavaPairRDD<Integer, Double> priceByBedroomsMean =
-                priceByBedroomsTotal.mapValues(AvgCount::getMean);
+                priceByBedroomsTotal.mapValues(AvgCount::getMean).sortByKey();
 
         System.out.println("housePriceTotal: ");
-        priceByBedroomsTotal.collectAsMap()
-                .forEach((count, value) -> System.out.println(count + " : " + value));
+        priceByBedroomsTotal.collect()
+                .forEach((tuple) -> System.out.println(tuple._1 + " : " + tuple._2));
 
         System.out.println("housePriceMean: ");
-        priceByBedroomsMean.collectAsMap()
-                .forEach((count, value) -> System.out.println(count + " : " + value));
-
+        priceByBedroomsMean.collect()
+                .forEach((tuple) -> System.out.println(tuple._1 + " : " + tuple._2));
     }
 
 }
